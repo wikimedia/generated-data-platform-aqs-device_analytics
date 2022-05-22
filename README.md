@@ -1,4 +1,4 @@
-# service-scaffold-golang
+# unique-devices
 
 A scaffolding for building Go services at the Wikimedia Foundation in order to establish similar patterns amongst all Go services.
 
@@ -11,8 +11,8 @@ and build using regular Docker tools.
 For example, build and run a `development` variant of a service with:
 ```
 blubber .pipeline/blubber.yaml development > Dockerfile
-docker build -t service-scaffold-golang .
-docker run -p 8000:8000  service-scaffold-golang
+docker build -t unique-devices .
+docker run -p 8000:8000  unique-devices
 ```
 
 Connect to `http://localhost:8000/healthz`.
