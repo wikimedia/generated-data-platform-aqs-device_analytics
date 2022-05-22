@@ -1,18 +1,15 @@
 # unique-devices
 
-A scaffolding for building Go services at the Wikimedia Foundation in order to establish similar patterns amongst all Go services.
+Unique Devices is a public API developed and maintained by the Wikimedia Foundation that serves the [unique devices dataset](https://wikitech.wikimedia.org/wiki/Analytics/AQS/Unique_Devices), which contains the number of unique devices that have visited a Wikimedia project over a given period of time.
 
 ### Docker Quickstart
 
-Generated a Dockerfile for service variant with `blubber .pipeline/blubber.yaml <variant> > Dockerfile`,
-and build using regular Docker tools.
+You will need:
+- [aqs-docker-test-env](https://gitlab.wikimedia.org/frankie/aqs-docker-test-env) and its associated dependencies
 
+Start up the Dockerized test environment in aqs-docker-test-env, then:
 
-For example, build and run a `development` variant of a service with:
+```sh-session
+go run .
 ```
-blubber .pipeline/blubber.yaml development > Dockerfile
-docker build -t unique-devices .
-docker run -p 8000:8000  unique-devices
-```
-
-Connect to `http://localhost:8000/healthz`.
+Then, connect to `http://localhost:8080/healthz`.
