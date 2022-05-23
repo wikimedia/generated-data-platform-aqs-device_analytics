@@ -39,6 +39,17 @@ run:
 test:
 	go test
 
+check:
+	@if [ -n "`goimports -l *.go`" ]; then \
+	    echo "goimports: format errors detected" >&2; \
+	    false; \
+	fi
+	@if [ -n "`gofmt -l *.go`" ]; then \
+	    echo "gofmt: format errors detected" >&2; \
+	    false; \
+	fi
+	go vet ./...
+
 clean:
 	rm -f $(APPNAME)
 

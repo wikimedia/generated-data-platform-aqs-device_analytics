@@ -24,8 +24,10 @@ import (
 	"path"
 	"runtime"
 
-	log "github.com/eevans/servicelib-golang/logger"
+	log "gerrit.wikimedia.org/r/mediawiki/services/servicelib-golang/logger"
 	"github.com/eevans/servicelib-golang/middleware"
+	"github.com/gocql/gocql"
+	"github.com/julienschmidt/httprouter"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
@@ -67,7 +69,7 @@ func init() {
 	promBuildInfoGauge.Set(1)
 }
 
-// Entrypoint for our service
+// Entrypoint for the service
 func main() {
 	var confFile = flag.String("config", "./config.yaml", "Path to the configuration file")
 
@@ -91,11 +93,22 @@ func main() {
 
 	logger.Info("Initializing service %s (Go version: %s, Build host: %s, Timestamp: %s", config.ServiceName, version, buildHost, buildDate)
 
-	// Wrap certain routes to collect metrics
-	echoHandlerWrapper := middleware.PrometheusInstrumentationMiddleware(reqCounter, durationHisto)(&EchoHandler{logger})
+	cluster := gocql.NewCluster(config.Address)
+	cluster.Consistency = gocql.Quorum
 
-	http.Handle("/healthz", &HealthzHandler{NewHealthz(version, buildDate, buildHost)})
-	http.Handle("/metrics", promhttp.Handler())
-	http.Handle(path.Join(config.BaseURI, "echo"), echoHandlerWrapper)
-	http.ListenAndServe(fmt.Sprintf("%s:%d", config.Address, config.Port), nil)
+	session, err := cluster.CreateSession()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	// HTTP handler wrapped in Prometheus middleware
+	uniqueDevicesHandler := middleware.PrometheusInstrumentationMiddleware(reqCounter, durationHisto)(&UniqueDevicesHandler{logger: logger, session: session})
+
+	router := httprouter.New()
+	router.Handler("GET", "/healthz", &HealthzHandler{NewHealthz(version, buildDate, buildHost)})
+	router.Handler("GET", "/admin/metrics", promhttp.Handler())
+	router.Handler("GET", path.Join(config.BaseURI, "/:project/:access-site/:granularity/:start/:end"), uniqueDevicesHandler)
+
+	http.ListenAndServe(fmt.Sprintf("%s:%d", config.Address, config.Port), router)
 }
