@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # The name of this service (as it appears in logs)
-service_name: scaffold-demo
+service_name: unique-devices
 
 # A constant prepended to all URIs
 base_uri: /v0
