@@ -38,7 +38,7 @@ type Config struct {
 func NewConfig(data []byte) (*Config, error) {
 	// Populate a new Config with sane defaults
 	config := Config{
-		ServiceName: "service-scaffold-golang",
+		ServiceName: "unique-devices",
 		BaseURI:     "/v0",
 		Address:     "localhost",
 		Port:        8080,
