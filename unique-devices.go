@@ -41,7 +41,8 @@ func (s *UniqueDevicesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 	var params = httprouter.ParamsFromContext(r.Context())
 	var response = UniqueDevicesResponse{Items: make([]UniqueDevices, 0)}
 
-	project := strings.TrimSuffix(strings.ToLower(params.ByName("project")), ".org")
+	project := TrimProjectDomain(params.ByName("project"))
+	//strings.TrimPrefix(strings.TrimSuffix(strings.ToLower(params.ByName("project")), ".org"), "www.")
 	accessSite := strings.ToLower(params.ByName("access-site"))
 	granularity := strings.ToLower(params.ByName("granularity"))
 	var start, end string
@@ -156,4 +157,8 @@ func validateTimestamp(param string) (string, error) {
 	}
 
 	return timestamp, nil
+}
+
+func TrimProjectDomain(param string) (string) {
+	return strings.TrimPrefix(strings.TrimSuffix(strings.ToLower(param), ".org"), "www.")
 }
