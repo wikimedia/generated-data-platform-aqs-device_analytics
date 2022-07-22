@@ -120,8 +120,7 @@ func (s *UniqueDevicesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+	
 
 	var data []byte
 	if data, err = json.MarshalIndent(response, "", " "); err != nil {
@@ -135,6 +134,9 @@ func (s *UniqueDevicesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 			problem.Custom("uri", r.RequestURI)).WriteTo(w)
 		return
 	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	w.Write(data)
 }
 
