@@ -42,7 +42,6 @@ func (s *UniqueDevicesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 	var response = UniqueDevicesResponse{Items: make([]UniqueDevices, 0)}
 
 	project := TrimProjectDomain(params.ByName("project"))
-	//strings.TrimPrefix(strings.TrimSuffix(strings.ToLower(params.ByName("project")), ".org"), "www.")
 	accessSite := strings.ToLower(params.ByName("access-site"))
 	granularity := strings.ToLower(params.ByName("granularity"))
 	var start, end string
@@ -120,8 +119,7 @@ func (s *UniqueDevicesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+	
 
 	var data []byte
 	if data, err = json.MarshalIndent(response, "", " "); err != nil {
@@ -135,6 +133,9 @@ func (s *UniqueDevicesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 			problem.Custom("uri", r.RequestURI)).WriteTo(w)
 		return
 	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	w.Write(data)
 }
 
