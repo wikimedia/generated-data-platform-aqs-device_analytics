@@ -14,12 +14,12 @@ import (
 	"schneider.vip/problem"
 )
 
-//UniqueDevicesResponse represents a container for the unique devices resultset.
+// UniqueDevicesResponse represents a container for the unique devices resultset.
 type UniqueDevicesResponse struct {
 	Items []UniqueDevices `json:"items"`
 }
 
-//UniqueDevices represents one result from the unique devices resultset.
+// UniqueDevices represents one result from the unique devices resultset.
 type UniqueDevices struct {
 	Project     string `json:"project"`
 	AccessSite  string `json:"access-site"`
@@ -30,7 +30,7 @@ type UniqueDevices struct {
 	Underestimate int `json:"underestimate"`
 }
 
-//UniqueDevicesHandler is the HTTP handler for unique devices API requests.
+// UniqueDevicesHandler is the HTTP handler for unique devices API requests.
 type UniqueDevicesHandler struct {
 	logger  *logger.Logger
 	session *gocql.Session
