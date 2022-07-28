@@ -3,7 +3,10 @@ module github.com/nikkhn/service-scaffold-golang
 go 1.15
 
 require (
+	gerrit.wikimedia.org/r/mediawiki/services/servicelib-golang v0.0.0-20220322011350-df509f780b5c
 	github.com/eevans/servicelib-golang v1.0.3
+	github.com/gocql/gocql v1.1.0
+	github.com/julienschmidt/httprouter v1.3.0
 	github.com/prometheus/client_golang v1.10.0
 	github.com/stretchr/testify v1.7.0
 	gopkg.in/yaml.v2 v2.4.0

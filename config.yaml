@@ -16,7 +16,7 @@
 service_name: unique-devices
 
 # A constant prepended to all URIs
-base_uri: /v0
+base_uri: /metrics/unique-devices
 
 # The IP interface and port to bind the service to
 listen_address: localhost
