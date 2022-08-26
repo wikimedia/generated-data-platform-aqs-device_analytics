@@ -3,10 +3,11 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
+
 	"net/http"
 	"strings"
-	"time"
+
+	"gitlab.wikimedia.org/frankie/aqsassist"
 
 	"gerrit.wikimedia.org/r/mediawiki/services/servicelib-golang/logger"
 	"github.com/gocql/gocql"
@@ -21,13 +22,13 @@ type UniqueDevicesResponse struct {
 
 // UniqueDevices represents one result from the unique devices resultset.
 type UniqueDevices struct {
-	Project     string `json:"project"`
-	AccessSite  string `json:"access-site"`
-	Granularity string `json:"granularity"`
-	Timestamp   string `json:"timestamp"`
-	Devices     int    `json:"devices"`
-	Offset      int    `json:"offset"`
-	Underestimate int `json:"underestimate"`
+	Project       string `json:"project"`
+	AccessSite    string `json:"access-site"`
+	Granularity   string `json:"granularity"`
+	Timestamp     string `json:"timestamp"`
+	Devices       int    `json:"devices"`
+	Offset        int    `json:"offset"`
+	Underestimate int    `json:"underestimate"`
 }
 
 // UniqueDevicesHandler is the HTTP handler for unique devices API requests.
@@ -41,11 +42,11 @@ func (s *UniqueDevicesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 	var params = httprouter.ParamsFromContext(r.Context())
 	var response = UniqueDevicesResponse{Items: make([]UniqueDevices, 0)}
 
-	project := TrimProjectDomain(params.ByName("project"))
+	project := aqsassist.TrimProjectDomain(params.ByName("project"))
 	accessSite := strings.ToLower(params.ByName("access-site"))
 	granularity := strings.ToLower(params.ByName("granularity"))
 	var start, end string
-	
+
 	if granularity != "daily" && granularity != "monthly" && granularity != "hourly" {
 		problem.New(
 			problem.Type("about:blank"),
@@ -57,7 +58,7 @@ func (s *UniqueDevicesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	if start, err = validateTimestamp(params.ByName("start")); err != nil {
+	if start, err = aqsassist.ValidateTimestamp(params.ByName("start")); err != nil {
 		problem.New(
 			problem.Type("about:blank"),
 			problem.Title(http.StatusText(http.StatusBadRequest)),
@@ -67,7 +68,7 @@ func (s *UniqueDevicesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 			problem.Custom("uri", r.RequestURI)).WriteTo(w)
 		return
 	}
-	if end, err = validateTimestamp(params.ByName("end")); err != nil {
+	if end, err = aqsassist.ValidateTimestamp(params.ByName("end")); err != nil {
 		problem.New(
 			problem.Type("about:blank"),
 			problem.Title(http.StatusText(http.StatusBadRequest)),
@@ -97,12 +98,12 @@ func (s *UniqueDevicesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 				problem.Custom("uri", r.RequestURI)).WriteTo(w)
 		}
 		response.Items = append(response.Items, UniqueDevices{
-			Project:     project,
-			AccessSite:  accessSite,
-			Granularity: granularity,
-			Timestamp:   timestamp,
-			Devices:     devices,
-			Offset:      offset,
+			Project:       project,
+			AccessSite:    accessSite,
+			Granularity:   granularity,
+			Timestamp:     timestamp,
+			Devices:       devices,
+			Offset:        offset,
 			Underestimate: underestimate,
 		})
 	}
@@ -118,8 +119,6 @@ func (s *UniqueDevicesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 			problem.Custom("uri", r.RequestURI)).WriteTo(w)
 		return
 	}
-
-	
 
 	var data []byte
 	if data, err = json.MarshalIndent(response, "", " "); err != nil {
@@ -137,29 +136,4 @@ func (s *UniqueDevicesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(data)
-}
-
-func validateTimestamp(param string) (string, error) {
-	var err error
-	var timestamp string
-
-	// We accept timestamp parameters of two forms, YYYYMMDD and YYYYMMDDHH.
-	// If timestamp parameter is 8 bytes length (8 ASCII runes),
-	// then suffix the string with "00".
-
-	if len(param) == 8 {
-		timestamp = fmt.Sprintf("%s00", param)
-	} else {
-		timestamp = param
-	}
-
-	if _, err = time.Parse("2006010203", timestamp); err != nil {
-		return "", err
-	}
-
-	return timestamp, nil
-}
-
-func TrimProjectDomain(param string) (string) {
-	return strings.TrimPrefix(strings.TrimSuffix(strings.ToLower(param), ".org"), "www.")
 }
