@@ -1,4 +1,4 @@
-module github.com/nikkhn/service-scaffold-golang
+module gitlab.wikimedia.org/repos/generated-data-platform/aqs/unique-devices
 
 go 1.15
 
@@ -9,6 +9,7 @@ require (
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/prometheus/client_golang v1.10.0
 	github.com/stretchr/testify v1.7.0
+	gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20220826183849-400a9e2422b4
 	gopkg.in/yaml.v2 v2.4.0
 	schneider.vip/problem v1.6.0
 )
