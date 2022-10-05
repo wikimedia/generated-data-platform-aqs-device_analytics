@@ -36,6 +36,7 @@ type UniqueDevicesHandler struct {
 }
 
 func (s *UniqueDevicesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+
 	var err error
 	var params = httprouter.ParamsFromContext(r.Context())
 	var response = UniqueDevicesResponse{Items: make([]UniqueDevices, 0)}
@@ -66,7 +67,19 @@ func (s *UniqueDevicesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 			problem.Custom("uri", r.RequestURI)).WriteTo(w)
 		return
 	}
+
 	if end, err = aqsassist.ValidateTimestamp(params.ByName("end")); err != nil {
+		problem.New(
+			problem.Type("about:blank"),
+			problem.Title(http.StatusText(http.StatusBadRequest)),
+			problem.Custom("method", http.MethodGet),
+			problem.Status(http.StatusBadRequest),
+			problem.Detail("Invalid timestamp"),
+			problem.Custom("uri", r.RequestURI)).WriteTo(w)
+		return
+	}
+
+	if err = aqsassist.StartBeforeEnd(start, end); err != nil {
 		problem.New(
 			problem.Type("about:blank"),
 			problem.Title(http.StatusText(http.StatusBadRequest)),
