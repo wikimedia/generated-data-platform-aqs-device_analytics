@@ -278,6 +278,8 @@ github.com/urfave/cli v1.22.1/go.mod h1:Gos4lmkARVdJ6EkW0WaNv/tZAAMe9V7XWyB60NtX
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20220826183849-400a9e2422b4 h1:AlLmD7C8ZP8ZoqKzgfYSXqRGtxY2n+xvD4hqaPcgsKA=
 gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20220826183849-400a9e2422b4/go.mod h1:N6+tSx/RYnd/sc3rq41E4Q9CvK8QG3lGrp0fn3BbqmI=
+gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20221004182421-b725841c67df h1:3WpPiJmOdkYs1zflKUvMi2XFBJBwBsA0c1LJm8kOTyk=
+gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20221004182421-b725841c67df/go.mod h1:N6+tSx/RYnd/sc3rq41E4Q9CvK8QG3lGrp0fn3BbqmI=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/etcd v0.0.0-20191023171146-3cf2f69b5738/go.mod h1:dnLIgRNXwCJa5e+c6mIZCrds/GIG4ncV9HhK5PX7jPg=
 go.opencensus.io v0.20.1/go.mod h1:6WKK9ahsWS3RSO+PY9ZHZUfv2irvY6gN279GOPZjmmk=
