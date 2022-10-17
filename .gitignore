@@ -1,3 +1,5 @@
 unique-devices
 *~
+.idea/
 .vscode/
+.DS_Store
