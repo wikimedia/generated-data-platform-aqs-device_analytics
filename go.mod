@@ -9,7 +9,7 @@ require (
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/prometheus/client_golang v1.10.0
 	github.com/stretchr/testify v1.7.0
-	gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20221004182421-b725841c67df
+	gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20221101175339-84bed1538eae
 	gopkg.in/yaml.v2 v2.4.0
-	schneider.vip/problem v1.6.0
+	schneider.vip/problem v1.7.2
 )
