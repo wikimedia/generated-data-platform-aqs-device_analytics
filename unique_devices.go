@@ -119,6 +119,12 @@ func (s *UniqueDevicesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 		})
 	}
 
+	str := "The date(s) you used are valid, but we either do not have data for those date(s), or the project you asked for is not loaded yet.  Please check documentation for more information."
+	if len(response.Items) == 0 {
+		aqsassist.HandleEmptyResponse(w, r, str)
+		return
+	}
+
 	if err := scanner.Err(); err != nil {
 		s.logger.Request(r).Log(logger.ERROR, "Error querying database: %s", err)
 		problem.New(

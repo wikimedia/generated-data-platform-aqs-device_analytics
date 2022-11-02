@@ -280,6 +280,8 @@ gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20220826183849-400a9e2422b4 h1:AlL
 gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20220826183849-400a9e2422b4/go.mod h1:N6+tSx/RYnd/sc3rq41E4Q9CvK8QG3lGrp0fn3BbqmI=
 gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20221004182421-b725841c67df h1:3WpPiJmOdkYs1zflKUvMi2XFBJBwBsA0c1LJm8kOTyk=
 gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20221004182421-b725841c67df/go.mod h1:N6+tSx/RYnd/sc3rq41E4Q9CvK8QG3lGrp0fn3BbqmI=
+gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20221101175339-84bed1538eae h1:J+FdF70QbEiKzUXqIggWv9VN4tuHC4e/5GQDmZXYKn4=
+gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20221101175339-84bed1538eae/go.mod h1:5p41q6LICkBvyxkaAfeoYvQ1nCjhGamO43zuDsOxqMk=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/etcd v0.0.0-20191023171146-3cf2f69b5738/go.mod h1:dnLIgRNXwCJa5e+c6mIZCrds/GIG4ncV9HhK5PX7jPg=
 go.opencensus.io v0.20.1/go.mod h1:6WKK9ahsWS3RSO+PY9ZHZUfv2irvY6gN279GOPZjmmk=
@@ -432,5 +434,7 @@ honnef.co/go/tools v0.0.0-20190523083050-ea95bdfd59fc/go.mod h1:rf3lG4BRIbNafJWh
 honnef.co/go/tools v0.0.1-2019.2.3/go.mod h1:a3bituU0lyd329TUQxRnasdCoJDkEUEAqEt0JzvZhAg=
 schneider.vip/problem v1.6.0 h1:Kv4UcErwb6kh0tqq+WVo8pq2YFsm8nx8A+RitMuFpJE=
 schneider.vip/problem v1.6.0/go.mod h1:6hLRfO1e1MQWdG23Kl5b3Yp5FSexE+YiGVqCkAp3HUQ=
+schneider.vip/problem v1.7.2 h1:Nga1BSUU5Ze+v+d/w7H6XJBk1kIrwanjT2cmFt2ljbY=
+schneider.vip/problem v1.7.2/go.mod h1:6hLRfO1e1MQWdG23Kl5b3Yp5FSexE+YiGVqCkAp3HUQ=
 sigs.k8s.io/yaml v1.1.0/go.mod h1:UJmg0vDUVViEyp3mgSv9WPwZCDxu4rQW1olrI1uml+o=
 sourcegraph.com/sourcegraph/appdash v0.0.0-20190731080439-ebfcffb1b5c0/go.mod h1:hI742Nqp5OhwiqlzhgfbWU4mW4yO10fP+LoT9WOswdU=
