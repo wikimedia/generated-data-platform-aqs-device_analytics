@@ -1,4 +1,4 @@
-package main
+package test
 
 import (
 	"encoding/json"
@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"unique-devices/entities"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -27,7 +28,7 @@ func testURL(suffix string) string {
 	return fmt.Sprintf("%s/%s", strings.TrimRight(res, "/"), suffix)
 }
 
-func runQuery(t *testing.T, project string, sites string, granularity string, start int, end int) UniqueDevicesResponse {
+func runQuery(t *testing.T, project string, sites string, granularity string, start int, end int) entities.UniqueDevicesResponse {
 
 	res, err := http.Get(testURL(fmt.Sprintf("%s/%s/%s/%s/%s", project, sites, granularity, strconv.FormatInt(int64(start), 10), strconv.FormatInt(int64(end), 10))))
 
@@ -38,7 +39,7 @@ func runQuery(t *testing.T, project string, sites string, granularity string, st
 	body, err := ioutil.ReadAll(res.Body)
 	require.NoError(t, err, "Unable to read response")
 
-	n := UniqueDevicesResponse{}
+	n := entities.UniqueDevicesResponse{}
 	err = json.Unmarshal(body, &n)
 
 	require.NoError(t, err, "Unable to unmarshal response body")
@@ -90,7 +91,7 @@ func TestUniqueDevices(t *testing.T) {
 
 		assert.Len(t, n.Items, 31, "Unexpected response length")
 
-		u := UniqueDevices{
+		u := entities.UniqueDevices{
 			Project:       "en.wikipedia",
 			AccessSite:    "all-sites",
 			Granularity:   "daily",

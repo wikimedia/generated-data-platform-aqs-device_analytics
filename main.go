@@ -17,19 +17,18 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
-	"net/http"
 	"os"
 	"path"
-	"runtime"
 
 	log "gerrit.wikimedia.org/r/mediawiki/services/servicelib-golang/logger"
-	"github.com/eevans/servicelib-golang/middleware"
+	fasthttpprom "github.com/carousell/fasthttp-prometheus-middleware"
+	"github.com/fasthttp/router"
 	"github.com/gocql/gocql"
-	"github.com/julienschmidt/httprouter"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/roger-russel/fasthttp-router-middleware/pkg/middleware"
+	"github.com/valyala/fasthttp"
 )
 
 var (
@@ -38,36 +37,6 @@ var (
 	buildHost = "unknown"
 	version   = "unknown"
 )
-
-var (
-	reqCounter = prometheus.NewCounterVec(
-		prometheus.CounterOpts{
-			Name: "http_requests_total",
-			Help: "Count of HTTP requests processed, partitioned by status code and HTTP method.",
-		},
-		[]string{"code", "method"},
-	)
-
-	durationHisto = prometheus.NewHistogramVec(
-		prometheus.HistogramOpts{
-			Name:    "http_request_duration_seconds",
-			Help:    "A histogram of latencies for requests, partitioned by status code and HTTP method.",
-			Buckets: []float64{.001, .0025, .0050, .01, .025, .050, .10, .25, .50, 1},
-		},
-		[]string{"code", "method"},
-	)
-	promBuildInfoGauge = prometheus.NewGauge(
-		prometheus.GaugeOpts{
-			Name:        "service_scaffold_golang_build_info",
-			Help:        "Build information",
-			ConstLabels: map[string]string{"version": version, "build_date": buildDate, "build_host": buildHost, "go_version": runtime.Version()},
-		})
-)
-
-func init() {
-	prometheus.MustRegister(reqCounter, durationHisto, promBuildInfoGauge)
-	promBuildInfoGauge.Set(1)
-}
 
 // Entrypoint for the service
 func main() {
@@ -102,13 +71,28 @@ func main() {
 		os.Exit(1)
 	}
 
-	// HTTP handler wrapped in Prometheus middleware
-	uniqueDevicesHandler := middleware.PrometheusInstrumentationMiddleware(reqCounter, durationHisto)(&UniqueDevicesHandler{logger: logger, session: session})
+	r := router.New()
+	p := fasthttpprom.NewPrometheus("")
+	p.MetricsPath = "/admin/metrics"
+	p.Use(r)
 
-	router := httprouter.New()
-	router.Handler("GET", "/healthz", &HealthzHandler{NewHealthz(version, buildDate, buildHost)})
-	router.Handler("GET", "/admin/metrics", promhttp.Handler())
-	router.Handler("GET", path.Join(config.BaseURI, "/:project/:access-site/:granularity/:start/:end"), uniqueDevicesHandler)
+	r.GET("/healthz", func(ctx *fasthttp.RequestCtx) {
+		var response []byte
+		ctx.SetStatusCode(fasthttp.StatusOK)
+		if response, err = json.MarshalIndent(NewHealthz(version, buildDate, buildHost), "", "  "); err != nil {
+			ctx.SetBody([]byte(`{}`))
+			return
+		}
+		ctx.SetBody(response)
+	})
 
-	http.ListenAndServe(fmt.Sprintf("%s:%d", config.Address, config.Port), router)
+	midAccessGroup := middleware.New([]middleware.Middleware{SetContentType, SecureHeadersMiddleware})
+
+	// pass bound struct method to fasthttp
+	uniqueDevicesHandler := &UniqueDevicesHandler{
+		logger: logger, session: session}
+
+	r.GET(path.Join(config.BaseURI, "/{project}/{access-site}/{granularity}/{start}/{end}"), midAccessGroup(uniqueDevicesHandler.HandleFastHTTP))
+
+	fasthttp.ListenAndServe(fmt.Sprintf("%s:%d", config.Address, config.Port), r.Handler)
 }

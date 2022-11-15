@@ -17,8 +17,6 @@
 package main
 
 import (
-	"encoding/json"
-	"net/http"
 	"runtime"
 )
 
@@ -38,24 +36,4 @@ func NewHealthz(version, date, host string) *Healthz {
 		BuildHost: host,
 		GoVersion: runtime.Version(),
 	}
-}
-
-// HealthzHandler is an http.Handler that implements a readiness endpoint.
-type HealthzHandler struct {
-	healthz *Healthz
-}
-
-// Serves Healthz struct data as JSON
-func (s *HealthzHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var response []byte
-	var err error
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-
-	if response, err = json.MarshalIndent(s.healthz, "", "  "); err != nil {
-		w.Write([]byte(`{}`))
-		return
-	}
-	w.Write(response)
 }

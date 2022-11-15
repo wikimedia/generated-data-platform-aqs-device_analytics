@@ -37,7 +37,7 @@ run:
 	go run -ldflags "$(GO_LDFLAGS)" . -config $(CONFIG)
 
 test:
-	go test
+	 go test ./test
 
 check:
 	@if [ -n "`goimports -l *.go`" ]; then \
