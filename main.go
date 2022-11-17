@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Nikki Nikkhoui <nnikkhoui@wikimedia.org> and Wikimedia Foundation
+ * Copyright 2022 Wikimedia Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,5 +94,6 @@ func main() {
 
 	r.GET(path.Join(config.BaseURI, "/{project}/{access-site}/{granularity}/{start}/{end}"), midAccessGroup(uniqueDevicesHandler.HandleFastHTTP))
 
-	fasthttp.ListenAndServe(fmt.Sprintf("%s:%d", config.Address, config.Port), r.Handler)
+	err = fasthttp.ListenAndServe(fmt.Sprintf("%s:%d", config.Address, config.Port), r.Handler)
+	logger.Info(err.Error())
 }
