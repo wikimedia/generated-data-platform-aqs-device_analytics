@@ -1,6 +1,5 @@
 /*
- * Copyright 2021 Nikki Nikkhoui <nnikkhoui@wikimedia.org>, Eric Evans <eevans@wikimedia.org>,
- * and Wikimedia Foundation
+ * Copyright 2022 Wikimedia Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
