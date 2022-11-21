@@ -1,0 +1,87 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "*This page is a work in progress.*\n\nUnique Devices is a public API developed and maintained by the Wikimedia Foundation that serves analytical\ndata about number of unique devices of Wikipedia and its sister projects. ",
+        "title": "Wikimedia UniqueDevices API",
+        "termsOfService": "https://wikimediafoundation.org/wiki/Terms_of_Use",
+        "contact": {},
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "DRAFT"
+    },
+    "host": "localhost:8080",
+    "basePath": "/metrics/unique-devices/",
+    "paths": {
+        "/unique-devices/{project}/{accessSite}/{granularity}/{start}/{end}": {
+            "get": {
+                "description": "Given a wiki page and a date range, returns number of unique devices that visited that page.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Number of unique devices.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "en.wikipedia.org",
+                        "description": "Domain of a Wikimedia project",
+                        "name": "project",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.UniqueDevicesResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.UniqueDevices": {
+            "type": "object",
+            "properties": {
+                "access-site": {
+                    "type": "string"
+                },
+                "devices": {
+                    "type": "integer"
+                },
+                "granularity": {
+                    "type": "string"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "project": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                },
+                "underestimate": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.UniqueDevicesResponse": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/main.UniqueDevices"
+                    }
+                }
+            }
+        }
+    }
+}

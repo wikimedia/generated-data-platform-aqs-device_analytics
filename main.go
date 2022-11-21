@@ -37,6 +37,19 @@ var (
 	buildHost = "unknown"
 	version   = "unknown"
 )
+// API documentation
+// @title                 Wikimedia UniqueDevices API
+// @version               DRAFT
+// @description.markdown  api.md
+// @contact.name
+// @contact.url
+// @contact.email
+// @license.name          Apache 2.0
+// @license.url           http://www.apache.org/licenses/LICENSE-2.0.html
+// @termsOfService        https://wikimediafoundation.org/wiki/Terms_of_Use
+// @host                  localhost:8080
+// @basePath              /metrics/unique-devices/
+// @schemes               http
 
 // Entrypoint for the service
 func main() {
