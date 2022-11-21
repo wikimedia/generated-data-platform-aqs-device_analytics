@@ -12,7 +12,6 @@ import (
 	"github.com/gocql/gocql"
 	"github.com/valyala/fasthttp"
 	"gitlab.wikimedia.org/frankie/aqsassist"
-	"schneider.vip/problem"
 )
 
 // UniqueDevicesHandler is the HTTP handler for unique devices API requests.
@@ -31,36 +30,28 @@ func (s *UniqueDevicesHandler) HandleFastHTTP(ctx *fasthttp.RequestCtx) {
 	var start, end string
 
 	if granularity != "daily" && granularity != "monthly" && granularity != "hourly" {
-		problemResp, _ := json.Marshal(problem.New(
-			problem.Type("about:blank"),
-			problem.Title(http.StatusText(http.StatusBadRequest)),
-			problem.Custom("method", http.MethodGet),
-			problem.Status(http.StatusBadRequest),
-			problem.Detail("Invalid granularity"),
-			problem.Custom("uri", ctx.Request.URI().RequestURI())))
+		problemResp := aqsassist.CreateProblem(http.StatusBadRequest, "Invalid granularity", string(ctx.Request.URI().RequestURI())).JSON()
+		ctx.SetStatusCode(http.StatusBadRequest)
 		ctx.SetBody(problemResp)
 		return
 	}
 
 	if start, err = aqsassist.ValidateTimestamp(ctx.UserValue("start").(string)); err != nil {
-		problemResp, _ := json.Marshal(problem.New(
-			problem.Type("about:blank"),
-			problem.Title(http.StatusText(http.StatusBadRequest)),
-			problem.Custom("method", http.MethodGet),
-			problem.Status(http.StatusBadRequest),
-			problem.Detail("Invalid timestamp"),
-			problem.Custom("uri", ctx.Request.URI().RequestURI())))
+		problemResp := aqsassist.CreateProblem(http.StatusBadRequest, "start timestamp is invalid, must be a valid date in YYYYMMDD format", string(ctx.Request.URI().RequestURI())).JSON()
+		ctx.SetStatusCode(http.StatusBadRequest)
 		ctx.SetBody(problemResp)
 		return
 	}
 	if end, err = aqsassist.ValidateTimestamp(ctx.UserValue("end").(string)); err != nil {
-		problemResp, _ := json.Marshal(problem.New(
-			problem.Type("about:blank"),
-			problem.Title(http.StatusText(http.StatusBadRequest)),
-			problem.Custom("method", http.MethodGet),
-			problem.Status(http.StatusBadRequest),
-			problem.Detail("Invalid timestamp"),
-			problem.Custom("uri", ctx.Request.URI().RequestURI())))
+		problemResp := aqsassist.CreateProblem(http.StatusBadRequest, "end timestamp is invalid, must be a valid date in YYYYMMDD format", string(ctx.Request.URI().RequestURI())).JSON()
+		ctx.SetStatusCode(http.StatusBadRequest)
+		ctx.SetBody(problemResp)
+		return
+	}
+
+	if err = aqsassist.StartBeforeEnd(start, end); err != nil {
+		problemResp := aqsassist.CreateProblem(http.StatusBadRequest, err.Error(), string(ctx.Request.URI().RequestURI())).JSON()
+		ctx.SetStatusCode(http.StatusBadRequest)
 		ctx.SetBody(problemResp)
 		return
 	}
@@ -76,13 +67,8 @@ func (s *UniqueDevicesHandler) HandleFastHTTP(ctx *fasthttp.RequestCtx) {
 	var data []byte
 	if data, err = json.MarshalIndent(response, "", " "); err != nil {
 		s.logger.Log(logger.ERROR, "Unable to marshal response object: %s", err)
-		problemResp, _ := json.Marshal(problem.New(
-			problem.Type("about:blank"),
-			problem.Title(http.StatusText(http.StatusInternalServerError)),
-			problem.Custom("method", http.MethodGet),
-			problem.Status(http.StatusInternalServerError),
-			problem.Detail(err.Error()),
-			problem.Custom("uri", ctx.Request.URI().RequestURI())))
+		problemResp := aqsassist.CreateProblem(http.StatusInternalServerError, err.Error(), string(ctx.Request.URI().RequestURI())).JSON()
+		ctx.SetStatusCode(http.StatusInternalServerError)
 		ctx.SetBody(problemResp)
 		return
 	}

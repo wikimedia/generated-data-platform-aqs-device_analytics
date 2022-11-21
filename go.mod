@@ -12,7 +12,7 @@ require (
 	github.com/roger-russel/fasthttp-router-middleware v1.0.0
 	github.com/stretchr/testify v1.8.1
 	github.com/valyala/fasthttp v1.41.0
-	gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20221101175339-84bed1538eae
+	gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20221118180707-d5ae75ae2417
 	gopkg.in/yaml.v2 v2.4.0
 	schneider.vip/problem v1.7.2
 )
