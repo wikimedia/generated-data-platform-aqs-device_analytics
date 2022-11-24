@@ -6,7 +6,7 @@ import (
 
 // Set content type as application/json
 func SetContentType(ctx *fasthttp.RequestCtx) bool {
-	ctx.SetContentType("application/json")
+	ctx.SetContentType("application/json; charset=utf-8")
 	return true
 
 }
