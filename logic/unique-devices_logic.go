@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"unique-devices/entities"
 
-	"gitlab.wikimedia.org/frankie/aqsassist"
 	"gerrit.wikimedia.org/r/mediawiki/services/servicelib-golang/logger"
 	"github.com/gocql/gocql"
 	"github.com/valyala/fasthttp"
+	"gitlab.wikimedia.org/frankie/aqsassist"
 	"schneider.vip/problem"
 )
 
@@ -58,4 +58,3 @@ func (s *UniqueDevicesLogic) ProcessUniqueDevicesLogic(context context.Context, 
 	}
 	return problemData, response
 }
-

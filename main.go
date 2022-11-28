@@ -37,6 +37,7 @@ var (
 	buildHost = "unknown"
 	version   = "unknown"
 )
+
 // API documentation
 // @title                 Wikimedia UniqueDevices API
 // @version               DRAFT
@@ -103,7 +104,7 @@ func main() {
 
 	// pass bound struct method to fasthttp
 	uniqueDevicesHandler := &UniqueDevicesHandler{
-		logger: logger, session: session}
+		logger: logger, session: session, config: config}
 
 	r.GET(path.Join(config.BaseURI, "/{project}/{access-site}/{granularity}/{start}/{end}"), midAccessGroup(uniqueDevicesHandler.HandleFastHTTP))
 

@@ -26,22 +26,24 @@ import (
 
 // Config represents an application-wide configuration.
 type Config struct {
-	ServiceName string `yaml:"service_name"`
-	BaseURI     string `yaml:"base_uri"`
-	Address     string `yaml:"listen_address"`
-	Port        int    `yaml:"listen_port"`
-	LogLevel    string `yaml:"log_level"`
+	ServiceName    string `yaml:"service_name"`
+	BaseURI        string `yaml:"base_uri"`
+	Address        string `yaml:"listen_address"`
+	Port           int    `yaml:"listen_port"`
+	LogLevel       string `yaml:"log_level"`
+	ContextTimeout int    `yaml:"context_timeout"`
 }
 
 // NewConfig returns a new Config from YAML serialized as bytes.
 func NewConfig(data []byte) (*Config, error) {
 	// Populate a new Config with sane defaults
 	config := Config{
-		ServiceName: "unique-devices",
-		BaseURI:     "/metrics/unique-devices",
-		Address:     "localhost",
-		Port:        8080,
-		LogLevel:    "info",
+		ServiceName:    "unique-devices",
+		BaseURI:        "/metrics/unique-devices",
+		Address:        "localhost",
+		Port:           8080,
+		LogLevel:       "info",
+		ContextTimeout: 40,
 	}
 	err := yaml.Unmarshal(data, &config)
 	if err != nil {

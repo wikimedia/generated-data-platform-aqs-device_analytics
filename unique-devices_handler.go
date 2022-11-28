@@ -19,6 +19,7 @@ type UniqueDevicesHandler struct {
 	logger  *logger.Logger
 	session *gocql.Session
 	logic   *logic.UniqueDevicesLogic
+	config  *Config
 }
 
 func (s *UniqueDevicesHandler) HandleFastHTTP(ctx *fasthttp.RequestCtx) {
@@ -56,7 +57,7 @@ func (s *UniqueDevicesHandler) HandleFastHTTP(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	c, _ := context.WithTimeout(ctx, 40*time.Millisecond)
+	c, _ := context.WithTimeout(ctx, time.Duration(s.config.ContextTimeout)*time.Millisecond)
 	pbm, response := s.logic.ProcessUniqueDevicesLogic(c, ctx, project, accessSite, granularity, start, end, s.session, s.logger)
 	if pbm != nil {
 		problemResp, _ := json.Marshal(pbm)
