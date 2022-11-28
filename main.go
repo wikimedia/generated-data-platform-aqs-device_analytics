@@ -22,11 +22,11 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 
 	log "gerrit.wikimedia.org/r/mediawiki/services/servicelib-golang/logger"
 	fasthttpprom "github.com/carousell/fasthttp-prometheus-middleware"
 	"github.com/fasthttp/router"
-	"github.com/gocql/gocql"
 	"github.com/roger-russel/fasthttp-router-middleware/pkg/middleware"
 	"github.com/valyala/fasthttp"
 )
@@ -78,11 +78,13 @@ func main() {
 
 	logger.Info("Initializing service %s (Go version: %s, Build host: %s, Timestamp: %s", config.ServiceName, version, buildHost, buildDate)
 
-	cluster := gocql.NewCluster(config.Address)
-	cluster.Consistency = gocql.Quorum
+	logger.Info("Connecting to Cassandra database(s): %s (port %s)", strings.Join(config.Cassandra.Hosts, ","), config.Cassandra.Port)
+	logger.Debug("Cassandra: configured for consistency level '%s'", strings.ToLower(config.Cassandra.Consistency))
+	logger.Debug("Cassandra: configured for local datacenter '%s'", config.Cassandra.LocalDC)
 
-	session, err := cluster.CreateSession()
+	session, err := newCassandraSession(config)
 	if err != nil {
+		logger.Error("Failed to create Cassandra session: %s", err)
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}

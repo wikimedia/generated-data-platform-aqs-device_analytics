@@ -24,3 +24,16 @@ listen_port: 8080
 
 # Log level, one of (in increasing severity): debug, info, warning, error and fatal
 log_level: debug
+
+# Cassandra database configuration
+cassandra:
+  port: 9042
+  consistency: one
+  hosts:
+    - localhost
+  local_dc: datacenter1
+  # authentication:
+  #   username: your_cassandra_username
+  #   password: your_cassandra_password
+  # tls:
+  #   ca: /tmp/ca/rootCa.crt

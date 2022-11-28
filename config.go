@@ -26,24 +26,37 @@ import (
 
 // Config represents an application-wide configuration.
 type Config struct {
-	ServiceName    string `yaml:"service_name"`
-	BaseURI        string `yaml:"base_uri"`
-	Address        string `yaml:"listen_address"`
-	Port           int    `yaml:"listen_port"`
-	LogLevel       string `yaml:"log_level"`
-	ContextTimeout int    `yaml:"context_timeout"`
+	ServiceName    string    `yaml:"service_name"`
+	BaseURI        string    `yaml:"base_uri"`
+	Address        string    `yaml:"listen_address"`
+	Port           int       `yaml:"listen_port"`
+	LogLevel       string    `yaml:"log_level"`
+	ContextTimeout int       `yaml:"context_timeout"`
+	Cassandra      cassandra `yaml:"cassandra"`
+}
+
+type cassandra struct {
+	Port        int      `yaml:"port"`
+	Consistency string   `yaml:"consistency"`
+	Hosts       []string `yaml:"hosts"`
+	LocalDC     string   `yaml:"local_dc"`
 }
 
 // NewConfig returns a new Config from YAML serialized as bytes.
 func NewConfig(data []byte) (*Config, error) {
 	// Populate a new Config with sane defaults
 	config := Config{
-		ServiceName:    "unique-devices",
-		BaseURI:        "/metrics/unique-devices",
-		Address:        "localhost",
-		Port:           8080,
-		LogLevel:       "info",
-		ContextTimeout: 40,
+		ServiceName:     "unique-devices",
+		BaseURI:         "/metrics/unique-devices",
+		Address:         "localhost",
+		Port:            8080,
+		LogLevel:        "info",
+		ContextTimeout:  40,
+		Cassandra:       cassandra{
+			Port:        9042,
+			Consistency: "quorum",
+			Hosts:       []string{"localhost"},
+		},
 	}
 	err := yaml.Unmarshal(data, &config)
 	if err != nil {
@@ -70,12 +83,24 @@ func validateLogLevel(config *Config) error {
 	return fmt.Errorf("Unsupported log level: %s", config.LogLevel)
 }
 
+// validateCassandraConsistency ensures a valid cassandra consistency
+func validateCassandraConsistency(c cassandra) error {
+	switch strings.ToLower(c.Consistency) {
+	case "any", "one", "two", "three", "quorum", "all", "localquorum", "eachquorum", "localone":
+		return nil
+	}
+	return fmt.Errorf("Unsupported consistency level: %s", c.Consistency)
+}
+
 func validate(config *Config) (*Config, error) {
 	// Validate log level
 	if !strings.HasPrefix(config.BaseURI, "/") {
 		config.BaseURI = "/" + config.BaseURI
 	}
 	if err := validateLogLevel(config); err != nil {
+		return nil, err
+	}
+	if err := validateCassandraConsistency(config.Cassandra); err != nil {
 		return nil, err
 	}
 	return config, nil
