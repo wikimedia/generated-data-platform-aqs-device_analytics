@@ -11,7 +11,7 @@ require (
 	github.com/prometheus/client_golang v1.14.0 // indirect
 	github.com/roger-russel/fasthttp-router-middleware v1.0.0
 	github.com/stretchr/testify v1.8.1
-	github.com/swaggo/swag v1.8.7 // direct
+	github.com/swaggo/swag v1.8.8 // indirect
 	github.com/valyala/fasthttp v1.41.0
 	gitlab.wikimedia.org/frankie/aqsassist v0.0.0-20221118180707-d5ae75ae2417
 	gopkg.in/yaml.v2 v2.4.0

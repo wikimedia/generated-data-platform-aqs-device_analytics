@@ -60,6 +60,8 @@ func main() {
 	var err error
 	var logger *log.Logger
 
+	notFoundHandler := &NotFoundHandler{}
+
 	flag.Parse()
 
 	if config, err = ReadConfig(*confFile); err != nil {
@@ -85,7 +87,12 @@ func main() {
 		os.Exit(1)
 	}
 
+	// pass bound struct method to fasthttp
+	uniqueDevicesHandler := &UniqueDevicesHandler{
+		logger: logger, session: session, config: config}
+
 	r := router.New()
+	r.NotFound = notFoundHandler.HandleFastHTTP
 	p := fasthttpprom.NewPrometheus("")
 	p.MetricsPath = "/admin/metrics"
 	p.Use(r)
@@ -101,10 +108,6 @@ func main() {
 	})
 
 	midAccessGroup := middleware.New([]middleware.Middleware{SetContentType, SecureHeadersMiddleware})
-
-	// pass bound struct method to fasthttp
-	uniqueDevicesHandler := &UniqueDevicesHandler{
-		logger: logger, session: session, config: config}
 
 	r.GET(path.Join(config.BaseURI, "/{project}/{access-site}/{granularity}/{start}/{end}"), midAccessGroup(uniqueDevicesHandler.HandleFastHTTP))
 
