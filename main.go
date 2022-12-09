@@ -39,7 +39,7 @@ var (
 )
 
 // API documentation
-// @title                 Wikimedia UniqueDevices API
+// @title                 Wikimedia Unique Devices API
 // @version               DRAFT
 // @description.markdown  api.md
 // @contact.name
@@ -49,7 +49,7 @@ var (
 // @license.url           http://www.apache.org/licenses/LICENSE-2.0.html
 // @termsOfService        https://wikimediafoundation.org/wiki/Terms_of_Use
 // @host                  localhost:8080
-// @basePath              /metrics/unique-devices/
+// @basePath              /metrics/
 // @schemes               http
 
 // Entrypoint for the service

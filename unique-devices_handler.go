@@ -22,6 +22,17 @@ type UniqueDevicesHandler struct {
 	config  *Config
 }
 
+// API documentation
+// @summary      Get unique devices per project
+// @router       /unique-devices/{project}/{access-site}/{granularity}/{start}/{end}  [get]
+// @description  Given a Wikimedia project and a date range, returns the number of unique devices that visited that wiki.
+// @param        project      path  string  true  "Domain of a Wikimedia project"              example(en.wikipedia.org)
+// @param        access-site  path  string  true  "Method of access"                           example(all-sites)  Enums(all-sites, desktop-site, mobile-site)
+// @param        granularity  path  string  true  "Time unit for response data"                example(daily)  Enums(daily, monthly)
+// @param        start        path  string  true  "First date to include, in YYYYMMDD format"  example(20220101)
+// @param        end          path  string  true  "Last date to include, in YYYYMMDD format"   example(20220108)
+// @produce      json
+// @success      200  {object}  entities.UniqueDevicesResponse
 func (s *UniqueDevicesHandler) HandleFastHTTP(ctx *fasthttp.RequestCtx) {
 	var err error
 

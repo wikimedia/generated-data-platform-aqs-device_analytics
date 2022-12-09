@@ -4,8 +4,8 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "*This page is a work in progress.*\n\nUnique Devices is a public API developed and maintained by the Wikimedia Foundation that serves analytical\ndata about number of unique devices of Wikipedia and its sister projects. ",
-        "title": "Wikimedia UniqueDevices API",
+        "description": "*This page is a work in progress.*\n\nUnique Devices is a public API developed and maintained by the Wikimedia Foundation that serves analytical\ndata about number of unique devices that access Wikipedia and its sister projects.\n",
+        "title": "Wikimedia Unique Devices API",
         "termsOfService": "https://wikimediafoundation.org/wiki/Terms_of_Use",
         "contact": {},
         "license": {
@@ -15,15 +15,15 @@
         "version": "DRAFT"
     },
     "host": "localhost:8080",
-    "basePath": "/metrics/unique-devices/",
+    "basePath": "/metrics/",
     "paths": {
-        "/unique-devices/{project}/{accessSite}/{granularity}/{start}/{end}": {
+        "/unique-devices/{project}/{access-site}/{granularity}/{start}/{end}": {
             "get": {
-                "description": "Given a wiki page and a date range, returns number of unique devices that visited that page.",
+                "description": "Given a Wikimedia project and a date range, returns the number of unique devices that visited that wiki.",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Number of unique devices.",
+                "summary": "Get unique devices per project",
                 "parameters": [
                     {
                         "type": "string",
@@ -32,13 +32,54 @@
                         "name": "project",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "enum": [
+                            "all-sites",
+                            "desktop-site",
+                            "mobile-site"
+                        ],
+                        "type": "string",
+                        "example": "all-sites",
+                        "description": "Method of access",
+                        "name": "access-site",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "enum": [
+                            "daily",
+                            "monthly"
+                        ],
+                        "type": "string",
+                        "example": "daily",
+                        "description": "Time unit for response data",
+                        "name": "granularity",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "example": "20220101",
+                        "description": "First date to include, in YYYYMMDD format",
+                        "name": "start",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "example": "20220108",
+                        "description": "Last date to include, in YYYYMMDD format",
+                        "name": "end",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/main.UniqueDevicesResponse"
+                            "$ref": "#/definitions/entities.UniqueDevicesResponse"
                         }
                     }
                 }
@@ -46,39 +87,51 @@
         }
     },
     "definitions": {
-        "main.UniqueDevices": {
+        "entities.UniqueDevices": {
             "type": "object",
             "properties": {
                 "access-site": {
-                    "type": "string"
+                    "description": "Method of access",
+                    "type": "string",
+                    "example": "all-sites"
                 },
                 "devices": {
-                    "type": "integer"
+                    "description": "Number of unique devices",
+                    "type": "integer",
+                    "example": 62614522
                 },
                 "granularity": {
-                    "type": "string"
+                    "description": "Frequency of data",
+                    "type": "string",
+                    "example": "daily"
                 },
                 "offset": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 13127765
                 },
                 "project": {
-                    "type": "string"
+                    "description": "Wikimedia project domain",
+                    "type": "string",
+                    "example": "en.wikipedia.org"
                 },
                 "timestamp": {
-                    "type": "string"
+                    "description": "Timestamp in YYYYMMDD format",
+                    "type": "string",
+                    "example": "20220101"
                 },
                 "underestimate": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 49486757
                 }
             }
         },
-        "main.UniqueDevicesResponse": {
+        "entities.UniqueDevicesResponse": {
             "type": "object",
             "properties": {
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/main.UniqueDevices"
+                        "$ref": "#/definitions/entities.UniqueDevices"
                     }
                 }
             }

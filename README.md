@@ -28,3 +28,8 @@ To run a suite of unit tests, first start up the Dockerized test environment in 
 make test
 ```
 
+## API documentation
+
+To generate and view the API documentation, read the [docs on Wikitech][wikipage].
+
+[wikipage]: https://wikitech.wikimedia.org/wiki/AQS_2.0#API_documentation

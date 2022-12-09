@@ -1,51 +1,96 @@
-basePath: /metrics/unique-devices/
+basePath: /metrics/
 definitions:
-  main.UniqueDevices:
+  entities.UniqueDevices:
     properties:
       access-site:
+        description: Method of access
+        example: all-sites
         type: string
       devices:
+        description: Number of unique devices
+        example: 62614522
         type: integer
       granularity:
+        description: Frequency of data
+        example: daily
         type: string
       offset:
+        example: 13127765
         type: integer
       project:
+        description: Wikimedia project domain
+        example: en.wikipedia.org
         type: string
       timestamp:
+        description: Timestamp in YYYYMMDD format
+        example: "20220101"
         type: string
       underestimate:
+        example: 49486757
         type: integer
     type: object
-  main.UniqueDevicesResponse:
+  entities.UniqueDevicesResponse:
     properties:
       items:
         items:
-          $ref: '#/definitions/main.UniqueDevices'
+          $ref: '#/definitions/entities.UniqueDevices'
         type: array
     type: object
 host: localhost:8080
 info:
   contact: {}
-  description: "*This page is a work in progress.*\n\nUnique Devices is a public API
-    developed and maintained by the Wikimedia Foundation that serves analytical\ndata
-    about number of unique devices of Wikipedia and its sister projects. "
+  description: |
+    *This page is a work in progress.*
+
+    Unique Devices is a public API developed and maintained by the Wikimedia Foundation that serves analytical
+    data about number of unique devices that access Wikipedia and its sister projects.
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: https://wikimediafoundation.org/wiki/Terms_of_Use
-  title: Wikimedia UniqueDevices API
+  title: Wikimedia Unique Devices API
   version: DRAFT
 paths:
-  /unique-devices/{project}/{accessSite}/{granularity}/{start}/{end}:
+  /unique-devices/{project}/{access-site}/{granularity}/{start}/{end}:
     get:
-      description: Given a wiki page and a date range, returns number of unique devices
-        that visited that page.
+      description: Given a Wikimedia project and a date range, returns the number
+        of unique devices that visited that wiki.
       parameters:
       - description: Domain of a Wikimedia project
         example: en.wikipedia.org
         in: path
         name: project
+        required: true
+        type: string
+      - description: Method of access
+        enum:
+        - all-sites
+        - desktop-site
+        - mobile-site
+        example: all-sites
+        in: path
+        name: access-site
+        required: true
+        type: string
+      - description: Time unit for response data
+        enum:
+        - daily
+        - monthly
+        example: daily
+        in: path
+        name: granularity
+        required: true
+        type: string
+      - description: First date to include, in YYYYMMDD format
+        example: "20220101"
+        in: path
+        name: start
+        required: true
+        type: string
+      - description: Last date to include, in YYYYMMDD format
+        example: "20220108"
+        in: path
+        name: end
         required: true
         type: string
       produces:
@@ -54,8 +99,8 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/main.UniqueDevicesResponse'
-      summary: Number of unique devices.
+            $ref: '#/definitions/entities.UniqueDevicesResponse'
+      summary: Get unique devices per project
 schemes:
 - http
 swagger: "2.0"
