@@ -13,6 +13,6 @@ type NotFoundHandler struct {
 
 func (s *NotFoundHandler) HandleFastHTTP(ctx *fasthttp.RequestCtx) {
 	problemResp := aqsassist.CreateProblem(http.StatusNotFound, "Invalid route", string(ctx.Request.URI().RequestURI())).JSON()
-	ctx.SetStatusCode(http.StatusBadRequest)
+	ctx.SetStatusCode(http.StatusNotFound)
 	ctx.SetBody(problemResp)
 }

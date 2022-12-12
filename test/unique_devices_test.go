@@ -85,6 +85,15 @@ func TestUniqueDevices(t *testing.T) {
 
 	})
 
+	t.Run("should return 404 for invalid route", func(t *testing.T){
+
+		res, err := http.Get(testURL("/en.wikipedia.org/wiki/.invalid/all-sites/daily/20190529/20200229"))
+
+		require.NoError(t, err, "Invalid http request")
+
+		require.Equal(t, http.StatusNotFound, res.StatusCode, "Wrong status code")
+	})
+
 	t.Run("should return the same data when using timestamps with hours", func(t *testing.T) {
 
 		n := runQuery(t, "en.wikipedia", "all-sites", "daily", 2021010100, 2021020100)
