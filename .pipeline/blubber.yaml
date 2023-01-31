@@ -1,17 +1,32 @@
+# syntax=docker-registry.wikimedia.org/repos/releng/blubber:v0.12.1
 version: v4
-base: docker-registry.wikimedia.org/golang:1.14-1
+base: docker-registry.wikimedia.org/wikimedia-buster:latest
 lives:
   in: /srv/service/
+apt:
+  packages:
+    - wmf-certificates
 
 variants:
   build:
-    apt: { packages: [build-essential] }
+    base: docker-registry.wikimedia.org/golang1.17:latest
     copies: [local]
-    entrypoint: [make, build]
+    apt:
+      packages:
+        - git
+    builder:
+      requirements:
+        - .
+      command: ["make", "build"]
+    runs:
+      insecurely: true
   development:
     includes: [build]
     apt: { packages: [ca-certificates] }
     entrypoint: [make, run]
+  check:
+    includes: [build]
+    entrypoint: [make, check]
   test:
     includes: [build]
     apt: { packages: [ca-certificates] }

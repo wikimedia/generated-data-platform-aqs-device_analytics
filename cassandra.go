@@ -13,54 +13,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- package main
+package main
 
- import (
-	 "fmt"
-	 "strings"
+import (
+	"fmt"
+	"strings"
 
-	 "github.com/gocql/gocql"
- )
+	"github.com/gocql/gocql"
+)
 
- // Return a new Cassandra session corresponding to the provided config.
- func newCassandraSession(config *Config) (*gocql.Session, error) {
-	 var cluster *gocql.ClusterConfig = gocql.NewCluster(config.Cassandra.Hosts...)
+// Return a new Cassandra session corresponding to the provided config.
+func newCassandraSession(config *Config) (*gocql.Session, error) {
+	var cluster *gocql.ClusterConfig = gocql.NewCluster(config.Cassandra.Hosts...)
 
-	 cluster.Consistency, _ = goCQLConsistency(config.Cassandra.Consistency)
-	 cluster.Port = config.Cassandra.Port
+	cluster.Consistency, _ = goCQLConsistency(config.Cassandra.Consistency)
+	cluster.Port = config.Cassandra.Port
 
-	 // Host selection
-	 if config.Cassandra.LocalDC != "" {
-		 cluster.PoolConfig.HostSelectionPolicy = gocql.DCAwareRoundRobinPolicy(config.Cassandra.LocalDC)
-	 } else {
-		 cluster.PoolConfig.HostSelectionPolicy = gocql.RoundRobinHostPolicy()
-	 }
+	// Host selection
+	if config.Cassandra.LocalDC != "" {
+		cluster.PoolConfig.HostSelectionPolicy = gocql.DCAwareRoundRobinPolicy(config.Cassandra.LocalDC)
+	} else {
+		cluster.PoolConfig.HostSelectionPolicy = gocql.RoundRobinHostPolicy()
+	}
 
-	 return cluster.CreateSession()
- }
+	return cluster.CreateSession()
+}
 
- // Given a string, return the corresponding GoCQL consistency level type.
- func goCQLConsistency(c string) (gocql.Consistency, error) {
-	 switch strings.ToLower(c) {
-	 case "any":
-		 return gocql.Any, nil
-	 case "one":
-		 return gocql.One, nil
-	 case "two":
-		 return gocql.Two, nil
-	 case "three":
-		 return gocql.Three, nil
-	 case "quorum":
-		 return gocql.Quorum, nil
-	 case "all":
-		 return gocql.All, nil
-	 case "localquorum":
-		 return gocql.LocalQuorum, nil
-	 case "eachquorum":
-		 return gocql.EachQuorum, nil
-	 case "localone":
-		 return gocql.LocalOne, nil
-	 default:
-		 return 0, fmt.Errorf("Unrecognized Cassandra consistency level")
-	 }
- }
+// Given a string, return the corresponding GoCQL consistency level type.
+func goCQLConsistency(c string) (gocql.Consistency, error) {
+	switch strings.ToLower(c) {
+	case "any":
+		return gocql.Any, nil
+	case "one":
+		return gocql.One, nil
+	case "two":
+		return gocql.Two, nil
+	case "three":
+		return gocql.Three, nil
+	case "quorum":
+		return gocql.Quorum, nil
+	case "all":
+		return gocql.All, nil
+	case "localquorum":
+		return gocql.LocalQuorum, nil
+	case "eachquorum":
+		return gocql.EachQuorum, nil
+	case "localone":
+		return gocql.LocalOne, nil
+	default:
+		return 0, fmt.Errorf("Unrecognized Cassandra consistency level")
+	}
+}

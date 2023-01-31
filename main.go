@@ -78,7 +78,7 @@ func main() {
 
 	logger.Info("Initializing service %s (Go version: %s, Build host: %s, Timestamp: %s", config.ServiceName, version, buildHost, buildDate)
 
-	logger.Info("Connecting to Cassandra database(s): %s (port %s)", strings.Join(config.Cassandra.Hosts, ","), config.Cassandra.Port)
+	logger.Info("Connecting to Cassandra database(s): %s (port %d)", strings.Join(config.Cassandra.Hosts, ","), config.Cassandra.Port)
 	logger.Debug("Cassandra: configured for consistency level '%s'", strings.ToLower(config.Cassandra.Consistency))
 	logger.Debug("Cassandra: configured for local datacenter '%s'", config.Cassandra.LocalDC)
 

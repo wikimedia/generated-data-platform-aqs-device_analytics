@@ -46,13 +46,13 @@ type cassandra struct {
 func NewConfig(data []byte) (*Config, error) {
 	// Populate a new Config with sane defaults
 	config := Config{
-		ServiceName:     "unique-devices",
-		BaseURI:         "/metrics/unique-devices",
-		Address:         "localhost",
-		Port:            8080,
-		LogLevel:        "info",
-		ContextTimeout:  40,
-		Cassandra:       cassandra{
+		ServiceName:    "unique-devices",
+		BaseURI:        "/metrics/unique-devices",
+		Address:        "localhost",
+		Port:           8080,
+		LogLevel:       "info",
+		ContextTimeout: 40,
+		Cassandra: cassandra{
 			Port:        9042,
 			Consistency: "quorum",
 			Hosts:       []string{"localhost"},
