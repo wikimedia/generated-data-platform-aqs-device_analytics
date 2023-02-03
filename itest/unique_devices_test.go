@@ -1,4 +1,7 @@
-package test
+// Once these tests no longer have external dependiencies this file
+// should be renamed back to unique_devices_test.go
+
+package itest
 
 import (
 	"encoding/json"

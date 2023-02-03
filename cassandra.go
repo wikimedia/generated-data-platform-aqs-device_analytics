@@ -18,12 +18,13 @@ package main
 import (
 	"fmt"
 	"strings"
+	"unique-devices/configuration"
 
 	"github.com/gocql/gocql"
 )
 
 // Return a new Cassandra session corresponding to the provided config.
-func newCassandraSession(config *Config) (*gocql.Session, error) {
+func newCassandraSession(config *configuration.Config) (*gocql.Session, error) {
 	var cluster *gocql.ClusterConfig = gocql.NewCluster(config.Cassandra.Hosts...)
 
 	cluster.Consistency, _ = goCQLConsistency(config.Cassandra.Consistency)

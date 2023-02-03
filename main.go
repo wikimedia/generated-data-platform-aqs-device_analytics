@@ -23,6 +23,7 @@ import (
 	"os"
 	"path"
 	"strings"
+	"unique-devices/configuration"
 
 	log "gerrit.wikimedia.org/r/mediawiki/services/servicelib-golang/logger"
 	fasthttpprom "github.com/carousell/fasthttp-prometheus-middleware"
@@ -56,7 +57,7 @@ var (
 func main() {
 	var confFile = flag.String("config", "./config.yaml", "Path to the configuration file")
 
-	var config *Config
+	var config *configuration.Config
 	var err error
 	var logger *log.Logger
 
@@ -64,7 +65,7 @@ func main() {
 
 	flag.Parse()
 
-	if config, err = ReadConfig(*confFile); err != nil {
+	if config, err = configuration.ReadConfig(*confFile); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}

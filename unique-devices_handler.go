@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"device-analytics/configuration"
 	"device-analytics/logic"
 
 	"gerrit.wikimedia.org/r/mediawiki/services/servicelib-golang/logger"
@@ -20,7 +21,7 @@ type UniqueDevicesHandler struct {
 	logger  *logger.Logger
 	session *gocql.Session
 	logic   *logic.UniqueDevicesLogic
-	config  *Config
+	config  *configuration.Config
 }
 
 // API documentation
