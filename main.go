@@ -39,7 +39,7 @@ var (
 )
 
 // API documentation
-// @title                 Wikimedia Unique Devices API
+// @title                 Wikimedia Device Analytics Service
 // @version               DRAFT
 // @description.markdown  api.md
 // @contact.name

@@ -46,7 +46,7 @@ type cassandra struct {
 func NewConfig(data []byte) (*Config, error) {
 	// Populate a new Config with sane defaults
 	config := Config{
-		ServiceName:    "unique-devices",
+		ServiceName:    "device-analytics",
 		BaseURI:        "/metrics/unique-devices",
 		Address:        "localhost",
 		Port:           8080,

@@ -4,8 +4,8 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "*This page is a work in progress.*\n\nUnique Devices is a public API developed and maintained by the Wikimedia Foundation that serves analytical\ndata about number of unique devices that access Wikipedia and its sister projects.\n",
-        "title": "Wikimedia Unique Devices API",
+        "description": "*This page is a work in progress.*\n\nDevice Analytics is a public API developed and maintained by the Wikimedia Foundation that serves analytical\ndata about number of unique devices that access Wikipedia and its sister projects.\n",
+        "title": "Wikimedia Device Analytics API",
         "termsOfService": "https://wikimediafoundation.org/wiki/Terms_of_Use",
         "contact": {},
         "license": {

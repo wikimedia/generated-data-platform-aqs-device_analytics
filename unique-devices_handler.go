@@ -6,7 +6,8 @@ import (
 	"net/http"
 	"strings"
 	"time"
-	"unique-devices/logic"
+
+	"device-analytics/logic"
 
 	"gerrit.wikimedia.org/r/mediawiki/services/servicelib-golang/logger"
 	"github.com/gocql/gocql"
@@ -14,7 +15,7 @@ import (
 	"gitlab.wikimedia.org/frankie/aqsassist"
 )
 
-// UniqueDevicesHandler is the HTTP handler for unique devices API requests.
+// UniqueDevicesHandler is the HTTP handler for unique-devices endpoint requests.
 type UniqueDevicesHandler struct {
 	logger  *logger.Logger
 	session *gocql.Session

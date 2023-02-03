@@ -1,4 +1,4 @@
-module unique-devices
+module device-analytics
 
 go 1.15
 

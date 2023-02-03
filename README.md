@@ -1,6 +1,6 @@
-# unique-devices
+# device-analytics
 
-Unique Devices is a public API developed and maintained by the Wikimedia Foundation that serves the [unique devices dataset](https://wikitech.wikimedia.org/wiki/Analytics/AQS/Unique_Devices), which contains the number of unique devices that have visited a Wikimedia project over a given period of time.
+Device Analytics is a service that provides a public API developed and maintained by the Wikimedia Foundation that serves the [Unique Devices dataset](https://wikitech.wikimedia.org/wiki/Analytics/AQS/Unique_Devices), which contains the number of unique devices that have visited a Wikimedia project over a given period of time.
 
 ### Docker Quickstart
 

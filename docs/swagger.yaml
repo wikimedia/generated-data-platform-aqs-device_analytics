@@ -42,13 +42,13 @@ info:
   description: |
     *This page is a work in progress.*
 
-    Unique Devices is a public API developed and maintained by the Wikimedia Foundation that serves analytical
+    Device Analytics is a service serving a public API developed and maintained by the Wikimedia Foundation that serves analytical
     data about number of unique devices that access Wikipedia and its sister projects.
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: https://wikimediafoundation.org/wiki/Terms_of_Use
-  title: Wikimedia Unique Devices API
+  title: Wikimedia Device Analytics API
   version: DRAFT
 paths:
   /unique-devices/{project}/{access-site}/{granularity}/{start}/{end}:

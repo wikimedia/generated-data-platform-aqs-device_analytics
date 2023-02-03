@@ -149,8 +149,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8080",
 	BasePath:         "/metrics/",
 	Schemes:          []string{"http"},
-	Title:            "Wikimedia Unique Devices API",
-	Description:      "*This page is a work in progress.*\n\nUnique Devices is a public API developed and maintained by the Wikimedia Foundation that serves analytical\ndata about number of unique devices that access Wikipedia and its sister projects.\n",
+	Title:            "Wikimedia Device Analytics API",
+	Description:      "*This page is a work in progress.*\n\nDevice Analytics is a public API developed and maintained by the Wikimedia Foundation that serves analytical\ndata about number of unique devices that access Wikipedia and its sister projects from the Unique devices dataset.\n",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

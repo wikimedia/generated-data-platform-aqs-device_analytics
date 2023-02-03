@@ -1,7 +1,7 @@
 [gerrit]
 host=gerrit.wikimedia.org
 port=29418
-project=generated-data-platform/aqs/device_analytics.git
+project=generated-data-platform/aqs/device-analytics.git
 track=1
 defaultrebase=0
 defaultbranch=main

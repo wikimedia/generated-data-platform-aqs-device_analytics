@@ -2,8 +2,8 @@ package logic
 
 import (
 	"context"
+	"device-analytics/entities"
 	"net/http"
-	"unique-devices/entities"
 
 	"gerrit.wikimedia.org/r/mediawiki/services/servicelib-golang/logger"
 	"github.com/gocql/gocql"

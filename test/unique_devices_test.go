@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"io/ioutil"
 
+	"device-analytics/entities"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
 	"testing"
-	"unique-devices/entities"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -85,7 +85,7 @@ func TestUniqueDevices(t *testing.T) {
 
 	})
 
-	t.Run("should return 404 for invalid route", func(t *testing.T){
+	t.Run("should return 404 for invalid route", func(t *testing.T) {
 
 		res, err := http.Get(testURL("/en.wikipedia.org/wiki/.invalid/all-sites/daily/20190529/20200229"))
 
