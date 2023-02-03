@@ -1,6 +1,6 @@
 # syntax=docker-registry.wikimedia.org/repos/releng/blubber:v0.12.1
 version: v4
-base: docker-registry.wikimedia.org/wikimedia-buster:latest
+base: docker-registry.wikimedia.org/wikimedia-bullseye:latest
 lives:
   in: /srv/service/
 apt:

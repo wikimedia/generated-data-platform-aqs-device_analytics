@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-APPNAME     = unique-devices
+APPNAME     = device-analytics
 VERSION     = $(shell /usr/bin/git describe --always)
 BUILD_DATE  = $(shell date -u +%Y-%m-%dT%T:%Z)
 HOSTNAME    = $(shell hostname)
