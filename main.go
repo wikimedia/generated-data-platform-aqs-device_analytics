@@ -94,6 +94,7 @@ func main() {
 		logger: logger, session: session, config: config}
 
 	r := router.New()
+	r.RedirectFixedPath = false
 	r.NotFound = notFoundHandler.HandleFastHTTP
 	p := fasthttpprom.NewPrometheus("")
 	p.MetricsPath = "/admin/metrics"

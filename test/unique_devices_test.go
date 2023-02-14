@@ -47,9 +47,18 @@ func runQuery(t *testing.T, project string, sites string, granularity string, st
 }
 
 func TestUniqueDevices(t *testing.T) {
+	t.Run("should return 404 for an invalid route", func(t *testing.T) {
+		// Leading slash should result in an invalid url
+		res, err := http.Get(testURL("/en.wikipedia/all-sites/daily/20210101/20210201"))
+
+		require.NoError(t, err, "Invalid http request")
+
+		require.Equal(t, http.StatusNotFound, res.StatusCode, "Wrong status code")
+	})
+
 	t.Run("should return 200 for expected parameters", func(t *testing.T) {
 
-		res, err := http.Get(testURL("/en.wikipedia/all-sites/daily/20210101/20210201"))
+		res, err := http.Get(testURL("en.wikipedia.org/all-sites/daily/20210101/20210201"))
 
 		require.NoError(t, err, "Invalid http request")
 
@@ -58,7 +67,7 @@ func TestUniqueDevices(t *testing.T) {
 
 	t.Run("should return 400 when parameters are wrong", func(t *testing.T) {
 
-		res, err := http.Get(testURL("/wrong-project/wrong-sites/wrong-granularity/00000000/00000000"))
+		res, err := http.Get(testURL("wrong-project/wrong-sites/wrong-granularity/00000000/00000000"))
 
 		require.NoError(t, err, "Invalid http request")
 
@@ -67,7 +76,7 @@ func TestUniqueDevices(t *testing.T) {
 
 	t.Run("should return 400 when start is after end", func(t *testing.T) {
 
-		res, err := http.Get(testURL("/en.wikipedia/all-sites/daily/20210201/20210101"))
+		res, err := http.Get(testURL("en.wikipedia/all-sites/daily/20210201/20210101"))
 
 		require.NoError(t, err, "Invalid http request")
 
@@ -77,7 +86,7 @@ func TestUniqueDevices(t *testing.T) {
 
 	t.Run("should return 400 when timestamp is invalid", func(t *testing.T) {
 
-		res, err := http.Get(testURL("/en.wikipedia/all-sites/daily/0000/0000"))
+		res, err := http.Get(testURL("en.wikipedia/all-sites/daily/0000/0000"))
 
 		require.NoError(t, err, "Invalid http request")
 
@@ -87,7 +96,7 @@ func TestUniqueDevices(t *testing.T) {
 
 	t.Run("should return 404 for invalid route", func(t *testing.T) {
 
-		res, err := http.Get(testURL("/en.wikipedia.org/wiki/.invalid/all-sites/daily/20190529/20200229"))
+		res, err := http.Get(testURL("en.wikipedia.org/wiki/.invalid/all-sites/daily/20190529/20200229"))
 
 		require.NoError(t, err, "Invalid http request")
 
